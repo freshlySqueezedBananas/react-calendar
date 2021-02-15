@@ -572,11 +572,17 @@ export default class Calendar extends Component {
       next2Label,
       nextAriaLabel,
       nextLabel,
+      actionAriaLabel,
+      actionLabel,
+      actionHandler,
+      drillUpLabel,
+      drillDownLabel,
       prev2AriaLabel,
       prev2Label,
       prevAriaLabel,
       prevLabel,
       showDoubleView,
+      value
     } = this.props;
 
     return (
@@ -594,6 +600,11 @@ export default class Calendar extends Component {
         next2Label={next2Label}
         nextAriaLabel={nextAriaLabel}
         nextLabel={nextLabel}
+        actionAriaLabel={actionAriaLabel}
+        actionLabel={actionLabel}
+        drillUpLabel={drillUpLabel}
+        drillDownLabel={drillDownLabel}
+        actionHandler={actionHandler}
         prev2AriaLabel={prev2AriaLabel}
         prev2Label={prev2Label}
         prevAriaLabel={prevAriaLabel}
@@ -602,6 +613,7 @@ export default class Calendar extends Component {
         showDoubleView={showDoubleView}
         view={view}
         views={views}
+        value={this.state.value}
       />
     );
   }
@@ -681,6 +693,13 @@ Calendar.propTypes = {
   next2Label: PropTypes.node,
   nextAriaLabel: PropTypes.string,
   nextLabel: PropTypes.node,
+  actionAriaLabel: PropTypes.string,
+  actionLabel: PropTypes.node,
+  actionHandler: PropTypes.func,
+  drillUpAriaLabel: PropTypes.string,
+  drillUpLabel: PropTypes.node,
+  drillDownAriaLabel: PropTypes.string,
+  drillDownLabel: PropTypes.node,
   onActiveStartDateChange: PropTypes.func,
   onChange: PropTypes.func,
   onClickDay: PropTypes.func,

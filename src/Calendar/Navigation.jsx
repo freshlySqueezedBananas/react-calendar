@@ -16,7 +16,7 @@ import {
   formatMonthYear as defaultFormatMonthYear,
   formatYear as defaultFormatYear,
 } from '../shared/dateFormatter';
-import { isView, isViews } from '../shared/propTypes';
+import { isView, isViews, isValue } from '../shared/propTypes';
 
 const className = 'react-calendar__navigation';
 
@@ -34,6 +34,9 @@ export default function Navigation({
   next2Label = '»',
   nextAriaLabel = '',
   nextLabel = '›',
+  actionAriaLabel = '',
+  actionLabel,
+  actionHandler,
   prev2AriaLabel = '',
   prev2Label = '«',
   prevAriaLabel = '',
@@ -42,6 +45,11 @@ export default function Navigation({
   showDoubleView,
   view,
   views,
+  value,
+  drillUpAriaLabel,
+  drillUpLabel,
+  drillDownAriaLabel,
+  drillDownLabel,
 }) {
   const drillUpAvailable = views.indexOf(view) > 0;
   const shouldShowPrevNext2Buttons = view !== 'century';
@@ -92,6 +100,12 @@ export default function Navigation({
 
   function onClickNext2() {
     setActiveStartDate(nextActiveStartDate2);
+  }
+
+  function onClickAction() {
+    const date = value ? value : new Date();
+
+    actionHandler(date);
   }
 
   function renderLabel(date) {
@@ -148,6 +162,8 @@ export default function Navigation({
             </span>
           </>
         )}
+        {drillDownLabel && view === 'month' && drillDownLabel}
+        {drillUpLabel && view !== 'month' && drillUpLabel}
       </button>
     );
   }
@@ -157,7 +173,8 @@ export default function Navigation({
       className={className}
       style={{ display: 'flex' }}
     >
-      {prev2Label !== null && shouldShowPrevNext2Buttons && (
+      {renderButton()}
+      {/* {prev2Label !== null && shouldShowPrevNext2Buttons && (
         <button
           aria-label={prev2AriaLabel}
           className={`${className}__arrow ${className}__prev2-button`}
@@ -167,7 +184,7 @@ export default function Navigation({
         >
           {prev2Label}
         </button>
-      )}
+      )} */}
       {prevLabel !== null && (
         <button
           aria-label={prevAriaLabel}
@@ -179,7 +196,6 @@ export default function Navigation({
           {prevLabel}
         </button>
       )}
-      {renderButton()}
       {nextLabel !== null && (
         <button
           aria-label={nextAriaLabel}
@@ -191,7 +207,7 @@ export default function Navigation({
           {nextLabel}
         </button>
       )}
-      {next2Label !== null && shouldShowPrevNext2Buttons && (
+      {/* {next2Label !== null && shouldShowPrevNext2Buttons && (
         <button
           aria-label={next2AriaLabel}
           className={`${className}__arrow ${className}__next2-button`}
@@ -201,11 +217,27 @@ export default function Navigation({
         >
           {next2Label}
         </button>
+      )} */}
+      {actionLabel && actionHandler && (
+        <div className={`${className}__action-wrapper`}>
+          <button
+            aria-label={actionAriaLabel}
+            className={`${className}__action-button`}
+            onClick={onClickAction}
+            type="button"
+          >
+            {actionLabel}
+          </button>
+        </div>
       )}
     </div>
   );
 }
 
+const isLooseValue = PropTypes.oneOfType([
+  PropTypes.string,
+  isValue,
+]);
 Navigation.propTypes = {
   activeStartDate: PropTypes.instanceOf(Date).isRequired,
   drillUp: PropTypes.func.isRequired,
@@ -220,6 +252,13 @@ Navigation.propTypes = {
   next2Label: PropTypes.node,
   nextAriaLabel: PropTypes.string,
   nextLabel: PropTypes.node,
+  actionAriaLabel: PropTypes.string,
+  actionLabel: PropTypes.node,
+  actionHandler: PropTypes.func,
+  drillUpAriaLabel: PropTypes.string,
+  drillUpLabel: PropTypes.node,
+  drillDownAriaLabel: PropTypes.string,
+  drillDownLabel: PropTypes.node,
   prev2AriaLabel: PropTypes.string,
   prev2Label: PropTypes.node,
   prevAriaLabel: PropTypes.string,
@@ -228,4 +267,5 @@ Navigation.propTypes = {
   showDoubleView: PropTypes.bool,
   view: isView.isRequired,
   views: isViews.isRequired,
+  value: isLooseValue,
 };

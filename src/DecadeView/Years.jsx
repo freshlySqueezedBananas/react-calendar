@@ -9,7 +9,7 @@ import { tileGroupProps } from '../shared/propTypes';
 export default function Years(props) {
   const { activeStartDate } = props;
   const start = getBeginOfDecadeYear(activeStartDate);
-  const end = start + 9;
+  const end = start + 15;
 
   return (
     <TileGroup
